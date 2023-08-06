@@ -1,0 +1,34 @@
+﻿substitutions:
+  irpin: "4" # data pin for the IR receiver    
+
+esphome:
+  name: irlogger
+  comment: "ESPHome IR logger, based on IRremoteESP8266 library"
+  libraries:
+    - crankyoldgit/IRremoteESP8266
+  includes:
+    - irlogger.h
+     
+esp8266:
+  board: esp01_1m
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+api:
+  reboot_timeout: 0s
+
+web_server:
+
+logger:
+  level: DEBUG
+  logs:
+    component: ERROR
+
+custom_component:
+- lambda: |-
+    auto irlogger = new IRLogger(${irpin});
+    return {irlogger};
+  components:
+  - id: ir_logger_id
